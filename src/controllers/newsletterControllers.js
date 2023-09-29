@@ -1,6 +1,6 @@
 const newsletter = require('../models/newsletter');
 
-const newsletterController = {
+const newsletterControllers = {
 
   showAllNewsletter: (req, res) => {
     newsletter.allNewsletter((err, hasil) => {
@@ -87,4 +87,4 @@ const newsletterController = {
 
 };
 
-module.exports = newsletterController;
+module.exports = newsletterControllers;
