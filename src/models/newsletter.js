@@ -19,7 +19,7 @@ const newsletter = {
       console.error('Error saat mengirim newsletter:', error);
       callback(error, null);
     } else {
-      db.query('INSERT INTO edutbkNewsletter (email, status) VALUES (?, ?, ?, ?, ?)', [data.email, data.status], (err, result) => {
+      db.query('INSERT INTO edutbkNewsletter (email, status) VALUES (?, ?)', [data.email, data.status], (err, result) => {
         if (err) {
           console.error('Error saat mengirim newsletter:', err);
           callback(err, null);
