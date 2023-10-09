@@ -2,7 +2,7 @@ const db = require('./db');
 
 const registrasi = {
   allRegistrasi: (callback) => {
-    db.query('SELECT * FROM edutbklogin', (err, result) => {
+    db.query('SELECT * FROM edutbkLogin', (err, result) => {
       if (err) {
         console.error('Error saat mengambil data registrasi:', err);
         callback(err, null);
@@ -19,7 +19,7 @@ const registrasi = {
       console.error('Error saat mengisi data:', error);
       callback(error, null);
     } else {
-      db.query('INSERT INTO edutbklogin (nama, email, password, status) VALUES (?, ?, ?, ?)', [data.nama, data.email, data.password, data.status], (err, result) => {
+      db.query('INSERT INTO edutbkLogin (nama, email, password, status) VALUES (?, ?, ?, ?)', [data.nama, data.email, data.password, data.status], (err, result) => {
         if (err) {
           console.error('Error saat mengisi data:', err);
           callback(err, null);
@@ -36,7 +36,7 @@ const registrasi = {
       console.error('Error saat menghapus data registrasi:', error);
       callback(error, null);
     } else {
-      db.query('DELETE FROM edutbklogin WHERE id = ?', [id], (err, result) => {
+      db.query('DELETE FROM edutbkLogin WHERE id = ?', [id], (err, result) => {
         if (err) {
           console.error('Error saat menghapus data registrasi:', err);
           callback(err, null);
@@ -53,7 +53,7 @@ const registrasi = {
       console.error('Error saat mengedit registrasi:', error);
       callback(error, null);
     } else {
-      db.query('UPDATE edutbklogin SET nama = ?, email = ?, password = ?, status = ? WHERE id = ?', [data.nama, data.email, data.password, data.status, id], (err, result) => {
+      db.query('UPDATE edutbkLogin SET nama = ?, email = ?, password = ?, status = ? WHERE id = ?', [data.nama, data.email, data.password, data.status, id], (err, result) => {
         if (err) {
           console.error('Error saat mengedit newsletter:', err);
           callback(err, null);
@@ -70,7 +70,7 @@ const registrasi = {
       console.error('Error saat menampilkan registrasi berdasarkan ID:', error);
       callback(error, null);
     } else {
-      db.query('SELECT * FROM edutbklogin WHERE id = ?', [id], (err, result) => {
+      db.query('SELECT * FROM edutbkLogin WHERE id = ?', [id], (err, result) => {
         if (err) {
           console.error('Error saat menampilkan registrasi berdasarkan ID:', err);
           callback(err, null);

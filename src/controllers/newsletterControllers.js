@@ -16,7 +16,7 @@ const newsletterControllers = {
   createNewsletter: (req, res) => {
     const { email } = req.body;
   
-    if (!news ) {
+    if (!email) {
       res.status(400).json({ error: 'Form isi diperlukan' });
       return;
     }
