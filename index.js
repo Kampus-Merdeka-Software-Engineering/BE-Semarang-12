@@ -14,13 +14,14 @@ const contactRoutes = require('./src/routes/contactRoutes');
 const registrasiRoutes = require('./src/routes/registrasiRoutes');
 const newsletterRoutes = require('./src/routes/newsletterRoutes');
 const loginRoutes = require('./src/routes/loginRoutes');
-// const courseRoutes = require('./src/routes/courseRoutes');
+const courseRoutes = require('./src/routes/courseRoutes');
 
 app.use(express.json())
 app.use('/api', contactRoutes);
 app.use('/api', registrasiRoutes);
 app.use('/api', newsletterRoutes);
 app.use('/api', loginRoutes);
+app.use('/api', courseRoutes);
 
 app.listen(port, () => {
     console.log(`Server berjalan di port ${port}`)

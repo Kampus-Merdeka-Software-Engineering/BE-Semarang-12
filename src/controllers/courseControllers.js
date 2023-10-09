@@ -1,87 +1,70 @@
 const Course = require('../models/course');
+const shortid = require('shortid');
 
 const courseController = {
 
   showAllCourse: (req, res) => {
-    Course.showCourse((err, hasil) => {
-      if (err) {
-        console.error('Error saat mengambil Course:', err);
-        res.status(500).json({ error: 'Kesalahan Internal Server' });
-        return;
+    Course.allCourse((error, courses) => {
+      if (error) {
+        console.error(error);
+        return res.status(500).json({ message: 'Terjadi kesalahan.' });
       }
-      res.status(200).json(hasil);
+      res.status(200).json(courses);
     });
   },
-  
+
   createCourse: (req, res) => {
-    const { email } = req.body;
-  
-    if (!email ) {
-      res.status(400).json({ error: 'Form isi diperlukan' });
-      return;
-    }
-  
-    const newCourse = { email, status: 'Terkirim' };
-  
-    Course.create(newCourse, (err, hasil) => {
-      if (err) {
-        console.error('Error saat membuat Course:', err);
-        res.status(500).json({ error: 'Kesalahan Internal Server' });
-        return;
-      }
-      res.status(201).json({ pesan: 'Course berhasil dibuat', Course: hasil });
-    });
-  },
-  
-  editCourse: (req, res) => {
-    const idCourse = req.params.id;
-    const { email } = req.body;
+    const { nama, email, course, tanggal } = req.body;
 
-    if (!email) {
+    if (!nama || !email || !course || !tanggal) {
       res.status(400).json({ error: 'Form isi diperlukan' });
       return;
     }
 
-    const courseEdited = { email, status: 'Terkirim dan Teredit' };
+    function generateCustomToken() {
+      const awalan = 'edUTBK-';
+      const token = shortid.generate();
+      const strip = '-';
+      return awalan + nama + strip + token;
+    }
+    // Membuat token pendaftaran unik menggunakan shortid
+    const tokenPendaftaran = generateCustomToken();
+    const data = { nama, email, course, tanggal, tokenCourse: tokenPendaftaran};
+    console.log(data);
 
-    Course.edit(idCourse, courseEdited, (err, hasil) => {
-      if (err) {
-        console.error('Error saat mengedit Course:', err);
-        res.status(500).json({ error: 'Kesalahan Internal Server' });
-        return;
+    Course.create(data, (error, hasil) => {
+      if (error) {
+        console.error(error);
+        return res.status(500).json({ message: 'Terjadi kesalahan.' });
       }
-      res.status(200).json({ pesan: 'Course berhasil diperbarui', Course: hasil });
+      res.status(201).json({ message: 'Pendaftaran berhasil!', course:hasil, token: tokenPendaftaran });
     });
   },
 
-  hapusCourse: (req, res) => {
-    const idCourse = req.params.id;
+  deleteCourse: (req, res) => {
+    const { id } = req.params;
 
-    Course.delete(idCourse, (err) => {
-      if (err) {
-        console.error('Error saat menghapus Course:', err);
-        res.status(500).json({ error: 'Kesalahan Internal Server' });
-        return;
+    Course.delete(id, (error, success) => {
+      if (error) {
+        console.error(error);
+        return res.status(500).json({ message: 'Terjadi kesalahan.' });
       }
-      res.status(200).json({ pesan: 'Course berhasil dihapus' });
+      if (!success) {
+        return res.status(404).json({ message: 'Data tidak ditemukan.' });
+      }
+      res.status(204).json();
     });
   },
 
-  showCourseByID: (req, res) => {
-    const idCourse = req.params.id;
+  courseByToken: (req, res) => {
+    const { tokenPendaftaran } = req.params;
 
-    Course.showByID(idCourse, (err, hasil) => {
-      if (err) {
-        console.error('Error saat mengambil data Course:', err);
-        res.status(500).json({ error: 'Kesalahan Internal Server' });
-        return;
+    Course.showByID(tokenPendaftaran, (error, courses) => {
+      if (error) {
+        console.error(error);
+        return res.status(500).json({ message: 'Terjadi kesalahan.' });
       }
-
-      if (hasil) {
-        res.status(200).json(hasil);
-      } else {
-        res.status(404).json({ error: 'Course tidak ditemukan' });
-      }
+      res.status(200).json(courses);
     });
   },
 
