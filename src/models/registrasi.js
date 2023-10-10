@@ -14,14 +14,16 @@ const registrasi = {
 
   create: (data, callback) => {
     if (!data || !data.nama || !data.email || !data.password || !data.status) {
-      const error = new Error('Data isi diperlukan. Mohon periksa kembali');
-      console.log(data.email, data.status);
-      console.error('Error saat mengisi data:', error);
+      const error = new Error('Semua data harus diisi. Mohon periksa kembali.');
+      console.error('Kesalahan saat mengisi data:', error);
       callback(error, null);
     } else {
-      db.query('INSERT INTO edutbkLogin (nama, email, password, status) VALUES (?, ?, ?, ?)', [data.nama, data.email, data.password, data.status], (err, result) => {
+      const query = 'INSERT INTO edutbkLogin (nama, email, password, status) VALUES (?, ?, ?, ?)';
+      const values = [data.nama, data.email, data.password, data.status];
+  
+      db.query(query, values, (err, result) => {
         if (err) {
-          console.error('Error saat mengisi data:', err);
+          console.error('Kesalahan saat mengisi data:', err);
           callback(err, null);
         } else {
           callback(null, result);
@@ -29,6 +31,7 @@ const registrasi = {
       });
     }
   },
+  
 
   delete: (id, callback) => {
     if (!id) {

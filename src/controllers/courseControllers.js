@@ -29,7 +29,7 @@ const courseController = {
     }
     // Membuat token pendaftaran unik menggunakan shortid
     const tokenPendaftaran = generateCustomToken();
-    const data = { nama, email, course, tanggal, tokenCourse: tokenPendaftaran};
+    const data = { nama, email, course, tanggal, tokenCourse: tokenPendaftaran, status: 'Terdaftar'};
     console.log(data);
 
     Course.create(data, (error, hasil) => {

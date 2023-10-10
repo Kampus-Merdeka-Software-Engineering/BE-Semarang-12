@@ -13,15 +13,17 @@ const course = {
   },
 
   create: (data, callback) => {
-    if (!data || !data.nama || !data.email || !data.course || !data.tanggal || !data.tokenCourse) {
-      const error = new Error('Data isi diperlukan. Mohon periksa kembali db');
-      console.log(data.nama, data.email, data.course, data.tanggal, data.tokenCourse);
-      console.error('Error saat membuat Course:', error);
+    if (!data || !data.nama || !data.email || !data.course || !data.tanggal || !data.tokenCourse || !data.status) {
+      const error = new Error('Semua data harus diisi. Harap periksa kembali masukan Anda.');
+      console.error('Kesalahan saat membuat Course:', error);
       callback(error, null);
     } else {
-      db.query('INSERT INTO edutbkCourse (nama, email, course, tanggal, tokenCourse) VALUES (?, ?, ?, ?, ?)', [data.nama, data.email, data.course, data.tanggal, data.tokenCourse], (err, result) => {
+      const query = 'INSERT INTO edutbkCourse (nama, email, course, tanggal, tokenCourse, status) VALUES (?, ?, ?, ?, ?, ?)';
+      const values = [data.nama, data.email, data.course, data.tanggal, data.tokenCourse, data.status];
+  
+      db.query(query, values, (err, result) => {
         if (err) {
-          console.error('Error saat membuat course:', err);
+          console.error('Kesalahan saat membuat course:', err);
           callback(err, null);
         } else {
           callback(null, result);
@@ -48,12 +50,12 @@ const course = {
   },
 
   edit: (id, data, callback) => {
-    if (!id || !data || (!data.nama && !data.email && !data.course && !data.tokenCourse )) {
+    if (!id || !data || (!data.nama && !data.email && !data.course && !data.tokenCourse && !data.status )) {
       const error = new Error('ID kontak dan data diperlukan.');
       console.error('Error saat mengedit kontak:', error);
       callback(error, null);
     } else {
-      db.query('UPDATE edutbkContact SET nama = ?, email = ?, course = ?, tanggal = ?, tokenCourse = ? WHERE id = ?', [data.nama, data.email, data.course, data.tokenCourse, id], (err, result) => {
+      db.query('UPDATE edutbkContact SET nama = ?, email = ?, course = ?, tanggal = ?, tokenCourse = ? status = ?, WHERE id = ?', [data.nama, data.email, data.course, data.tokenCourse, data.status, id], (err, result) => {
         if (err) {
           console.error('Error saat mengedit kontak:', err);
           callback(err, null);
